@@ -17,128 +17,69 @@ namespace CalculadoraForms
         double n1 = 0;
         double n2 = 0;
         string opc = "";
+        string hist = "";
         public Form1()
         {
             InitializeComponent();
         }
-        private void btn1_Click(object sender, EventArgs e)
+        private void numero_Click(object sender, EventArgs e)
         {
-            txbresultado.Text += "1";
-        }
-        private void btn2_Click_1(object sender, EventArgs e)
-        {
-            txbresultado.Text += "2";
+            Button numclick = (Button)sender;   
+            txbresultado.Text += numclick.Text;
+            
+
         }
 
-        private void btn3_Click(object sender, EventArgs e)
+        private void opc_Click(object sender, EventArgs e)
         {
-            txbresultado.Text += "3";
-        }
+            
+            
+          
+                
+            Button opcclick = (Button)sender;
 
-        private void btn4_Click(object sender, EventArgs e)
-        {
-            txbresultado.Text += "4";
-        }
-
-        private void btn5_Click(object sender, EventArgs e)
-        {
-            txbresultado.Text += "5";
-        }
-
-        private void btn6_Click(object sender, EventArgs e)
-        {
-            txbresultado.Text += "6";
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            txbresultado.Text += "7";
-        }
-
-        private void btn8_Click(object sender, EventArgs e)
-        {
-            txbresultado.Text += "8";
-        }
-
-        private void btn9_Click(object sender, EventArgs e)
-        {
-            txbresultado.Text += "9";
-        }
-
-        private void btn0_Click(object sender, EventArgs e)
-        {
-            txbresultado.Text += "0";
-        }
-
-        private void btnadicao_Click(object sender, EventArgs e)
-        {
             if (txbresultado.Text == "")
             {
-                if (n1 != 0)
+               if(hist.Length > 0)
                 {
-                    opc = "+";
-                    txbopc.Text = n1.ToString() + " " + opc;
+                    hist = hist.Substring(0, hist.Length - 1) + opcclick.Text.Replace("X", "*");
+                    txbopc.Text = hist;
+                    opc = opcclick.Text.Replace("X","*");
                 }
-                return;
+               return;
             }
-            n1 = double.Parse(txbresultado.Text);
-            opc = "+";
-            txbopc.Text = n1.ToString() + " " + opc;
-            txbresultado.Clear();
-        }
-
-
-
-
-        private void btnsubt_Click(object sender, EventArgs e)
-        {
-            if (txbresultado.Text == "")
+            if (n1 == 0)
             {
-                if (n1 != 0)
-                {
-                    opc = "-";
-                    txbopc.Text = n1.ToString() + " " + opc;
-                }
-                return;
+                n1 = double.Parse(txbresultado.Text);
+                hist = n1.ToString() + " " + opcclick.Text.Replace("X", "*");
             }
-            n1 = double.Parse(txbresultado.Text);
-                opc = "-";
-                txbopc.Text = n1.ToString() + " " + opc;
-                txbresultado.Clear();
-            }
-           
-       
-
-        private void btnmulti_Click(object sender, EventArgs e)
-        {
-            if (txbresultado.Text == "")
+            else
             {
-                if (n1 != 0)
+                n2 = double.Parse(txbresultado.Text);
+                if (opc == "+")
                 {
-                    opc = "*";
-                    txbopc.Text = n1.ToString() + " " + opc;
+                    n1 = n1 + n2;
                 }
-                return;
-            }
-            n1 = double.Parse(txbresultado.Text);
-            opc = "*";
-            txbopc.Text = n1.ToString() + " " + opc;
-            txbresultado.Clear();
-        }
-
-        private void btndivisao_Click(object sender, EventArgs e)
-        {
-            if (txbresultado.Text == "")
-            {
-                if (n1 != 0)
+                else if (opc == "-")
                 {
-                    opc = "/";
-                    txbopc.Text = n1.ToString() + " " + opc;
+                    n1 = n1 - n2;
                 }
-                return;
+                else if (opc == "*")
+                {
+                   n1 = n1 * n2;
+                }
+                else if (opc == "/")
+                {
+                    if (n2 == 0)
+                    {
+                        MessageBox.Show("Não é possível dividir por zero!");
+                        return;
+                    }
+                    n1 = n1 / n2;
+                }
+                hist += " " + n2.ToString() + " " + opcclick.Text.Replace("X", "*");
             }
-            n1 = double.Parse(txbresultado.Text);
-            opc = "/";
+           opc = opcclick.Text.Replace("X", "*");
             txbopc.Text = n1.ToString() + " " + opc;
             txbresultado.Clear();
         }
@@ -151,8 +92,10 @@ namespace CalculadoraForms
                 
                     return;
             }
+
             n2 = double.Parse(txbresultado.Text);
             double resultado = 0;
+
             if (opc == "+")
             {
                 resultado = n1 + n2;
